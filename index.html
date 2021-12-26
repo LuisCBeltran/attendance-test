@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <title>Attendance Test</title>
+  </head>
+  <body>
+    <header>
+      <h1>Attendance Test </h1>
+      <h2>Add Student</h2>
+      <form class="add-student-form" id="addStudentForm">
+        <label for="inputLastName">Last Name</label>
+        <input class="input-last-name" id="inputLastName" type="text" name="inputLastName">
+        <label for="inputName">Name</label>
+        <input class="input-name" id="inputName" type="text" name="inputName">
+        <input type="submit" value="Add Student">
+      </form>
+      <h2>Add Day </h2>
+      <form class="add-date-form" id="addDateForm">
+        <label for="inputDate">Date</label>
+        <input class="input-date" id="inputDate" type="date" name="inputDate">
+        <input type="submit" value="Add Day">
+      </form>
+    </header>
+    <main>
+      <table>
+        <thead>
+          <tr> 
+            <th>Last Name</th>
+            <th>Name </th>
+          </tr>
+        </thead>
+        <tbody class="student-list" id="studentsList"></tbody>
+      </table>
+    </main>
+    <script src="uuidv4.js"> </script>
+    <script src="script.js"> </script>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="shortcut icon", href="favicon.png", type="image/x-icon")
+        link(rel="stylesheet", href="style.css")
+        title Attendance Test
+    body
+        header
+            h1 Attendance Test 
+            h2 Add Student
+            form.add-student-form#addStudentForm
+                label(for="inputLastName") Last Name
+                input.input-last-name#inputLastName(type="text" name="inputLastName")
+                label(for="inputName") Name
+                input.input-name#inputName(type="text" name="inputName")
+                input(type="submit", value="Add Student")
+            h2 Add Day 
+            form.add-date-form#addDateForm
+                label(for="inputDate") Date
+                input.input-date#inputDate(type="date", name="inputDate")
+                input(type="submit", value="Add Day")
+        main
+            table
+                thead
+                    tr 
+                        th Last Name
+                        th Name 
+                tbody.student-list#studentsList
+        script(src="uuidv4.js") 
+        script(src="script.js") 
+
