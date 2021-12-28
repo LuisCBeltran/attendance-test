@@ -24,10 +24,9 @@ html(lang="en")
                 input(type="submit", value="Add Day")
         main
             table
-                thead
-                    tr 
-                        th Last Name
-                        th Name 
+                thead.date-list#dateList
+                    tr.date-row#dateRow
+
                 tbody.student-list#studentsList
         script(src="uuidv4.js") 
         script(src="script.js") 

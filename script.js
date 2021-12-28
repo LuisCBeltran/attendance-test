@@ -1,7 +1,3 @@
-// Main array to connect with localStorage
-
-let studentArray = []
-
 // Student Class
 
 class Student {
@@ -9,16 +5,6 @@ class Student {
         this.id = id
         this.name = name
         this.lastName = lastName
-    }
-}
-
-// Day Class
-
-class day {
-    constructor (id, day, month) {
-        this.id = id
-        this.day = day
-        this.month = month
     }
 }
 
@@ -64,9 +50,58 @@ class UI {
 
     } 
 
+    // Clear fields from Last Name and Name inputs
     static clearFields () {
         document.querySelector('#inputName').value = ''
         document.querySelector('#inputLastName').value = ''
+    }
+
+    // ADD DATE SECTION
+
+    static displayDateTitle () {
+
+        // Fetch dates from localStorage
+        const storedDates = Store.getSavedDates()
+
+        // If there is no data in dates, returns Last Name and Name. Else, it prints dates.
+        if (storedDates === null) {
+
+            const initialData = ['Last Name', 'Name']
+            Store.saveArrayOfDates(initialData)
+            const newStoredDates = Store.getSavedDates()
+            UI.printDates(newStoredDates)
+
+        } else {
+
+            const dates = Store.getSavedDates()
+            UI.printDates(dates)
+
+        }
+
+        // Creates HTML elements of the header list
+        
+
+        // Sums all the <th>'s and inserts them within the row
+        
+    }
+
+    static printDates (dates) {
+
+        // Selects the row of the head of the table
+        const row = document.querySelector('#dateRow')
+        row.innerHTML = ''
+
+        let ths = []
+        
+        // Gives HTML format to each date
+        dates.forEach((date) => {
+            ths.push(`<th>${date}</th>`)
+        })
+
+        // Change the format. From array to string, so it can be inserted as HTML
+        let reducer = (a, b) => a + b
+        let reducedThs = ths.reduce(reducer)
+        row.innerHTML = reducedThs
     }
 }
 
@@ -88,21 +123,44 @@ class Store {
 
     // Stores student on principal array
     static saveStudent(student) {
-
-        studentArray.push(student)
-        Store.saveArray(studentArray)
-        
+        let storedStudents = Store.getSavedStudents()
+        storedStudents.push(student)
+        Store.saveArray(storedStudents)
     }
 
-    // Stores principal array on localStorage
+    // Stores principal array of students on localStorage
     static saveArray(array) {
         localStorage.setItem('students', JSON.stringify(array))
+    }
+
+    // Fetch dates from localStorage
+    static getSavedDates () {
+
+        let datesJSON = localStorage.getItem('dates')
+        return JSON.parse(datesJSON)
+
+    }
+
+    // Adds a date to the localStorage
+    static saveDate (date) {
+        const storedDates = Store.getSavedDates()
+        storedDates.push(date)
+        Store.saveArrayOfDates(storedDates)
+    }
+
+    // Stores array of dates on localStorage
+    static saveArrayOfDates(array) {
+        localStorage.setItem('dates', JSON.stringify(array))
     }
 }
 
 // Event: Displays students
 
 document.addEventListener('DOMContentLoaded', UI.displayStudents)
+
+// Event: Display dates
+
+document.addEventListener('DOMContentLoaded', UI.displayDateTitle)
 
 // Event: Add a student
 
@@ -123,7 +181,6 @@ addStudentForm.addEventListener('submit', (e) => {
     const student = new Student(id, lastName, name)
 
     // Add student to UI
-
     UI.addStudentToList(student)
 
     // Clear fields
@@ -136,8 +193,23 @@ addStudentForm.addEventListener('submit', (e) => {
 
 // Event: Remove a student
 
-// Event: Add day
+// Event: Add date
 
-// Event: Remove a day
+const addDateForm = document.querySelector('#addDateForm')
 
-// Event: Remove a student
+addDateForm.addEventListener('submit', (e) => {
+
+    // Prevent default submit
+    e.preventDefault()
+
+    // Get value (date)
+    const date = document.querySelector('#inputDate').value
+
+    // Store date to localStorage
+    Store.saveDate(date)
+
+    // Add date to title within the table
+    UI.displayDateTitle()
+})
+
+// Event: Remove a date
