@@ -1,10 +1,10 @@
 // Student Class
 
 class Student {
-    constructor (id, name, lastName) {
+    constructor (id, lastName, name) {
         this.id = id
-        this.name = name
         this.lastName = lastName
+        this.name = name
     }
 }
 
@@ -77,11 +77,6 @@ class UI {
             UI.printDates(dates)
 
         }
-
-        // Creates HTML elements of the header list
-        
-
-        // Sums all the <th>'s and inserts them within the row
         
     }
 
@@ -121,11 +116,35 @@ class Store {
         }
     }
 
-    // Stores student on principal array
+    // Stores student on array
     static saveStudent(student) {
         let storedStudents = Store.getSavedStudents()
+        let storedDates = Store.getSavedDates()
+        if (storedDates.length > 2)
         storedStudents.push(student)
-        Store.saveArray(storedStudents)
+
+        // Compare function to sort students alphabetically
+        const compare = function (a, b) {
+            let lastNameA = a.lastName.toLowerCase()
+            let lastNameB = b.lastName.toLowerCase()
+            if (lastNameA < lastNameB) {
+                return -1
+            }
+            if (lastNameA > lastNameB) {
+                return 1
+            }
+            return 0
+        }
+
+        let sortedStoredStudents = storedStudents.sort(compare)
+
+        Store.saveArray(sortedStoredStudents)
+
+        let studentsList = document.querySelector('#studentsList')
+        studentsList.innerHTML = ''
+
+        UI.displayStudents()
+
     }
 
     // Stores principal array of students on localStorage
@@ -146,6 +165,13 @@ class Store {
         const storedDates = Store.getSavedDates()
         storedDates.push(date)
         Store.saveArrayOfDates(storedDates)
+
+        // Adds date to each student as a key and a value
+        let savedStudents = Store.getSavedStudents()
+        savedStudents.forEach(function (student) {
+            student[date] = 'P'
+        })
+        Store.saveArray(savedStudents)
     }
 
     // Stores array of dates on localStorage
@@ -210,6 +236,7 @@ addDateForm.addEventListener('submit', (e) => {
 
     // Add date to title within the table
     UI.displayDateTitle()
+
 })
 
 // Event: Remove a date
