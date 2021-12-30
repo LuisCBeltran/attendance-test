@@ -29,14 +29,18 @@ class UI {
 
         // Fetch values from each property in the student object
         let values = Object.values(student)
+        let keys = Object.keys(student)
 
         let tds = []
+
+        let i = 0
 
         // Pushes <td> within the tds array with the values from the student object
         values.forEach(function (value) {
             if (value.length < 24) {
-                tds.push(`<td>${value}</td>`)
+                tds.push(`<td class="${student.id} ${keys[i]}">${value}</td>`)
             }
+            i++
         })
 
         list.appendChild(row)
@@ -118,9 +122,22 @@ class Store {
 
     // Stores student on array
     static saveStudent(student) {
+
+        // Get students and dates from localStorage
         let storedStudents = Store.getSavedStudents()
         let storedDates = Store.getSavedDates()
-        if (storedDates.length > 2)
+
+        // Filter dates if there are dates already inserted
+        if (storedDates.length > 2) {
+            let filteredDates = storedDates.filter(function (date) {
+                return date.length === 10
+            })
+            filteredDates.forEach(function(date) {
+                student[date] = 'P'
+            })
+        }
+
+        // Add student to array
         storedStudents.push(student)
 
         // Compare function to sort students alphabetically
@@ -225,7 +242,7 @@ const addDateForm = document.querySelector('#addDateForm')
 
 addDateForm.addEventListener('submit', (e) => {
 
-    // Prevent default submit
+    // prevent default submit
     e.preventDefault()
 
     // Get value (date)
@@ -236,6 +253,10 @@ addDateForm.addEventListener('submit', (e) => {
 
     // Add date to title within the table
     UI.displayDateTitle()
+
+    // Cleans list and displays it again with the new information
+    document.querySelector('#studentsList').innerHTML = ''
+    UI.displayStudents()
 
 })
 
